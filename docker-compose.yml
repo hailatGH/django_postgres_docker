@@ -5,8 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: django_postgres_docker:latest
-    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    image: hailatdev/django_postgres_docker:latest
+    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && exec gunicorn --bind 0.0.0.0:8000 --workers 1 --threads 8 --timeout 0 core.wsgi:application"
     ports:
       - "8000:8000"
     volumes:
